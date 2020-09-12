@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "target": "ESNEXT",
+    "jsx": "react"
+  }
+}
