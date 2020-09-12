@@ -34,4 +34,4 @@ var e,n="/home/runner/work/clumsy-web/clumsy-web/node_modules/parcel-plugin-wasm
 },{"fs":"rDCW"}],0:[function(require,module,exports) {
 var b=require("TUK3");b.register("wasm",require("fISM"));b.load([["lib_bg.e7c2db59.wasm","vT5C"]]).then(function(){require("wdqJ");});
 },{}]},{},[0], null)
-//# sourceMappingURL=/main.deef64da.js.map
+//# sourceMappingURL=/clumsy-web/main.deef64da.js.map
