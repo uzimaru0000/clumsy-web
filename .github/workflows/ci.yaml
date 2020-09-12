@@ -1,0 +1,51 @@
+on:
+  push:
+    branches: [master]
+
+jobs:
+  node_build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install wasm-pack
+        run: cargo install wasm-pack
+      - name: Cargo build
+        run: cd lib && cargo build
+      - name: Install node_modules
+        run: npm install
+      - name: build
+        run: npm run build
+      - uses: actions/upload-artifact@v1
+        with:
+          name: node_build
+          path: dist/
+
+  deploy:
+    needs: node_build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Download building result for node
+        uses: actions/download-artifact@v1
+        with:
+          name: node_build
+      - name: Move file for node
+        run: mv ./node_build ./dist
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
